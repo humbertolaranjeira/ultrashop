@@ -68,6 +68,14 @@
 
                 console.log(el_parent.querySelector(".subtotal"));
                 el_parent.querySelector(".subtotal").textContent = sub_total; 
+
+                let total = 0;
+                for(let subtotais of document.querySelectorAll(".subtotal"))
+                {
+                    total += Number(subtotais.textContent);
+                }
+                console.log(total);
+                document.querySelector(".total").textContent = total;
                 //return;
             }
 
