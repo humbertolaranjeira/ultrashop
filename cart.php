@@ -54,11 +54,11 @@
         document.addEventListener("DOMContentLoaded", ()=>{
             const removeButtons = document.querySelectorAll(".remove");
 
-            //console.log(removeButtons);
+            const quantityInputs = document.querySelectorAll(".quantity");
 
             for (let button of removeButtons){
                 button.addEventListener("click", ()=>{
-                    console.log( button.dataset.product_id);
+                    //console.log( button.dataset.product_id);
                     const product_id = button.dataset.product_id;
 
                     fetch("requests.php", {
@@ -72,6 +72,26 @@
                     .then( parsedResponse => {
                         if(parsedResponse.status == "OK"){
                             button.parentNode.parentNode.remove();
+                        }
+                    });
+                });
+            }
+            
+            for(let input of quantityInputs){
+                input.addEventListener("change", () => {
+                    const product_id = input.dataset.product_id;
+                    const quantity = input.value;
+                    fetch("requests.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type":"application/x-www-form-urlencoded"
+                        },
+                        body: "request=changeQuantity&product_id="+ product_id +"&quantity=" + quantity
+                    })
+                    .then( response => response.json() )
+                    .then( parsedResponse => {
+                        if(parsedResponse.status == "OK"){
+                            //button.parentNode.parentNode.remove();
                         }
                     });
                 });
@@ -102,7 +122,9 @@
                 echo'
                 <tr>
                     <td>'.$item["name"].'</td>
-                    <td>' .$item["quantity"]. '</td>
+                    <td>
+                    <input data-product_id="' .$item["product_id"]. '" type="number" class="quantity" value="'. $item["quantity"]  .'" min="1" max="'. $item["stock"].'">
+                    </td>
                     <td>'.$item["price"].'€</td>
                     <td><span class="subtotal">'.$subtotal.'</span>€</td>
                     <td>
