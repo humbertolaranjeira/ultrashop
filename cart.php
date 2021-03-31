@@ -56,6 +56,10 @@
 
             const quantityInputs = document.querySelectorAll(".quantity");
 
+            function recalculateTotals(){
+                return;
+            }
+
             for (let button of removeButtons){
                 button.addEventListener("click", ()=>{
                     //console.log( button.dataset.product_id);
